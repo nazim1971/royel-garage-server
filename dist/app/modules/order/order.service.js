@@ -54,11 +54,36 @@ const getTotalRevenue = () => __awaiter(void 0, void 0, void 0, function* () {
     return totalRevenue;
 });
 const getAllOrderFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield order_model_1.Order.find();
+    const result = yield order_model_1.Order.find().populate('product');
+    return result;
+});
+const deleteOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield order_model_1.Order.findByIdAndDelete(id);
+    return result;
+});
+const updateOrderById = (id, updateData) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield order_model_1.Order.findByIdAndUpdate(id, updateData, { new: true });
+    return result;
+});
+const getOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const order = yield order_model_1.Order.findById(id).populate('product'); // Fetch the order and populate the product
+        return order;
+    }
+    catch (error) {
+        throw new Error("Error fetching the order by ID");
+    }
+});
+const getAllOrdersByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield order_model_1.Order.find({ email }).populate('product');
     return result;
 });
 exports.orderService = {
     createOrder,
     getTotalRevenue,
-    getAllOrderFromDB
+    getAllOrderFromDB,
+    deleteOrderById,
+    updateOrderById,
+    getOrderById,
+    getAllOrdersByEmail
 };

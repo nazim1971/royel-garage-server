@@ -5,21 +5,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const bike_route_1 = require("./app/modules/bike/bike.route");
-const order_route_1 = require("./app/modules/order/order.route");
-const global_error_1 = require("./app/error/global.error");
-const app = (0, express_1.default)();
-//parsers
-app.use(express_1.default.json());
-app.use((0, cors_1.default)());
-//Application Routes
-app.use('/', bike_route_1.bikeRoutes);
-app.use('/', order_route_1.orderRoutes);
-app.get('/', (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: 'Royel Grarage Server on Fire 🔥🔥🔥',
-    });
-});
-app.use(global_error_1.handleErrors);
-exports.default = app;
+const routes_1 = __importDefault(require("./app/routes"));
+const globalErrorHandler_1 = __importDefault(require("./app/middlewire/globalErrorHandler"));
+const notFound_1 = __importDefault(require("./app/middlewire/notFound"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+class Application {
+    constructor() {
+        this.App = (0, express_1.default)();
+        this.middleware();
+        this.routes();
+    }
+    middleware() {
+        this.App.use(express_1.default.json());
+        this.App.use((0, cookie_parser_1.default)());
+        this.App.use((0, cors_1.default)({
+            origin: 'http://localhost:5173',
+            credentials: true
+        }));
+    }
+    routes() {
+        //Application Routes
+        this.App.use('/api', routes_1.default);
+        this.App.get('/', (req, res) => {
+            res.status(200).json({
+                success: true,
+                message: 'Wink-blog on Fire 🔥🔥🔥',
+            });
+        });
+        //Global error handel
+        this.App.use(globalErrorHandler_1.default);
+        //Not found
+        this.App.use(notFound_1.default);
+    }
+}
+exports.default = new Application();

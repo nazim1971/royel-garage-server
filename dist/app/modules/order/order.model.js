@@ -16,6 +16,7 @@ const orderSchema = new mongoose_1.Schema({
     product: {
         type: mongoose_1.Schema.Types.ObjectId,
         required: [true, 'Product (bike) is required'],
+        ref: 'bikes'
     },
     quantity: {
         type: Number,
@@ -25,6 +26,15 @@ const orderSchema = new mongoose_1.Schema({
     totalPrice: {
         type: Number,
         required: [true, 'Total Price is required'],
+    },
+    status: {
+        type: String,
+        enum: ["Pending", "Processing", "Shipped", "Delivered"],
+        default: 'Pending',
+    },
+    isCancel: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true,

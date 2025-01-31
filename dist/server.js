@@ -14,17 +14,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
 const config_1 = __importDefault(require("./app/config"));
-const port = 5000;
-const activateServer = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield config_1.default.connectDB();
-        app_1.default.listen(port, () => {
-            console.log(`Server is running on Port: ${port} `);
+let server;
+// Async method to start the server
+function start() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield config_1.default.connectDB();
+            server = app_1.default.App.listen(config_1.default.port, () => {
+                console.log(`Server is running on Port: ${config_1.default.port}`);
+            });
+        }
+        catch (error) {
+            console.error('Error starting the server:', error);
+        }
+    });
+}
+start();
+process.on('unhandledRejection', () => {
+    console.log(`Unhandle rejection and shutting down server`);
+    if (server) {
+        server.close(() => {
+            process.exit(1);
         });
     }
-    catch (error) {
-        console.log(error);
-    }
+    process.exit(1);
 });
-// Call the function to start the server
-activateServer();
+process.on('uncaughtException', () => {
+    console.log(`😈 uncaughtException is detected , shutting down ...`);
+    process.exit(1);
+});

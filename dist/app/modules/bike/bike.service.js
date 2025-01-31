@@ -8,27 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.bikeService = void 0;
+const QueryBuilder_1 = __importDefault(require("../../builder/QueryBuilder"));
+const bike_const_1 = require("./bike.const");
 const bike_model_1 = require("./bike.model");
 const createBike = (bikeData) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield bike_model_1.Bike.create(bikeData);
     return result;
 });
-const getAllBikeFromDB = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
-    let query = {};
-    if (searchTerm) {
-        // Search in name, brand, or category fields
-        query = {
-            $or: [
-                { name: { $regex: searchTerm, $options: 'i' } },
-                { brand: { $regex: searchTerm, $options: 'i' } },
-                { category: { $regex: searchTerm, $options: 'i' } },
-            ],
-        };
-    }
-    const result = yield bike_model_1.Bike.find(query);
-    return result;
+const getAllBikeFromDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const productQuery = new QueryBuilder_1.default(bike_model_1.Bike.find(), payload)
+        .search(bike_const_1.productSrcField)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+    const result = yield productQuery.modelQuery;
+    const meta = yield productQuery.countTotal();
+    return { meta, result };
 });
 const getSingleBikeFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield bike_model_1.Bike.findById({ _id: id });

@@ -16,20 +16,59 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const path_1 = __importDefault(require("path"));
 dotenv_1.default.config({ path: path_1.default.join(process.cwd(), '.env') });
-const uri = process.env.DATABASE_URI;
-const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        if (!uri) {
-            throw new Error('MongoDB URI is not defined in the environment variables');
+class Config {
+    constructor() {
+        this.uri = process.env.DATABASE_URI;
+        // Ensure required variables are present
+        if (!this.uri) {
+            throw new Error('DATABASE URI is required in .env file');
         }
-        yield mongoose_1.default.connect(uri);
-        console.log('Connected to MongoDB Successfully');
+        if (!process.env.PORT) {
+            throw new Error('PORT is required in .env file');
+        }
+        if (!process.env.BCRYPT_SALT_ROUNDS) {
+            throw new Error('BCRYPT SALT ROUNDS is required in .env file');
+        }
+        if (!process.env.NODE_ENV) {
+            throw new Error('NODE ENV is required in .env file');
+        }
+        if (!process.env.JWT_ACCESS_SECRET) {
+            throw new Error('JWT_ACCESS_SECRET is required in .env file');
+        }
+        if (!process.env.JWT_REFRESH_SECRET) {
+            throw new Error('JWT_REFRESH_SECRET is required in .env file');
+        }
     }
-    catch (error) {
-        console.error('Error connecting to MongoDB:', error instanceof Error ? error.stack : error);
+    // MongoDB connection method
+    connectDB() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield mongoose_1.default.connect(this.uri);
+                console.log('Connected to MongoDB Successfully');
+            }
+            catch (error) {
+                console.error('Error connecting to MongoDB:', error instanceof Error ? error.stack : error);
+            }
+        });
     }
-});
-exports.default = {
-    port: process.env.PORT,
-    connectDB,
-};
+    // Getter for the port from the environment variable
+    get port() {
+        return Number(process.env.PORT);
+    }
+    get slat() {
+        return Number(process.env.BCRYPT_SALT_ROUNDS);
+    }
+    get password() {
+        return String(process.env.DEFAULT_PASS);
+    }
+    get nodeEnv() {
+        return String(process.env.NODE_ENV);
+    }
+    get jwt() {
+        return String(process.env.JWT_ACCESS_SECRET);
+    }
+    get jwtRef() {
+        return String(process.env.JWT_REFRESH_SECRET);
+    }
+}
+exports.default = new Config();

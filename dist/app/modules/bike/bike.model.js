@@ -36,10 +36,21 @@ const bikeSchema = new mongoose_1.Schema({
         required: [true, 'Brand name is required'],
         set: (value) => validateType(value, 'string'),
     },
+    model: {
+        type: String,
+        trim: true,
+        required: [true, 'Model name is required'],
+        set: (value) => validateType(value, 'string'),
+    },
+    image: {
+        type: String,
+        trim: true,
+    },
     price: {
         type: Number,
         required: [true, 'Bike price is required'],
-        min: [0, 'Bike price must be a positive value'],
+        min: [1, 'Bike price must be higher then 0'],
+        max: [1000, 'Bike price can not more then 1000'],
     },
     category: {
         type: String,
@@ -59,6 +70,7 @@ const bikeSchema = new mongoose_1.Schema({
     },
     inStock: {
         type: Boolean,
+        default: true,
         required: [true, 'Stock status is required'],
     },
 }, {

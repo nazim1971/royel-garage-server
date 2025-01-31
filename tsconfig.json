@@ -11,7 +11,7 @@
   },
   "include": [
     "src/**/*"                               
-, "../royelGarage client/src/utils/uploadImage.ts"  ],
+, ],
   "exclude": [
     "node_modules",                         
     "dist"                                  

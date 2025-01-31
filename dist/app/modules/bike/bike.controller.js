@@ -27,15 +27,14 @@ const createBike = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 const getAllBike = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { searchTerm } = req.query;
-        const result = yield bike_service_1.bikeService.getAllBikeFromDB(searchTerm);
-        if (result.length === 0) {
-            return res.status(404).json({
-                message: 'Not Bike Found',
-                status: false,
-                data: result,
-            });
-        }
+        const result = yield bike_service_1.bikeService.getAllBikeFromDB(req.query);
+        // if(result.length === 0){
+        // return  res.status(404).json({
+        //     message: 'Not Bike Found',
+        //     status: false,
+        //     data: result,
+        //   });
+        // }
         return res.status(200).json({
             message: 'Bikes retrieved successfully',
             status: true,

@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthRoute = void 0;
+const express_1 = require("express");
+const validateRequest_1 = require("../../middlewire/validateRequest");
+const user_validation_1 = require("../user/user.validation");
+const auth_controller_1 = require("./auth.controller");
+const auth_validate_1 = require("./auth.validate");
+const router = (0, express_1.Router)();
+router.post('/register', (0, validateRequest_1.validateMiddlewire)(user_validation_1.UserValidation.userCreationSchema), auth_controller_1.AuthController.registerUser);
+router.post('/login', (0, validateRequest_1.validateMiddlewire)(auth_validate_1.AuthValidation.loginValidationSchema), auth_controller_1.AuthController.loginUser);
+router.get('/user/:email', auth_controller_1.AuthController.getSingleUserFromDB);
+router.put('/user/:email', auth_controller_1.AuthController.updateUserNameFromDB);
+router.put('/reset-password', auth_controller_1.AuthController.resetPassword);
+router.post('/refresh-token', auth_controller_1.AuthController.refreshToken);
+router.get('/user', auth_controller_1.AuthController.getAllUsersFromDB);
+router.patch('/user/block-status', auth_controller_1.AuthController.updateUserBlockedStatusFromDB);
+exports.AuthRoute = router;
