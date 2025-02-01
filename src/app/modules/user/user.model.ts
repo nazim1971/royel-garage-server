@@ -24,6 +24,10 @@ const userSchema = new Schema<TUser, UserModel>(
       trim: true,
       select: false,
     },
+    image: {
+      type: String,
+      trim: true,
+    },
     role: {
       type: String,
       enum: ['customer', 'admin'],

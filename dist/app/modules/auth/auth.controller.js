@@ -20,7 +20,7 @@ const auth_service_1 = require("./auth.service");
 const http_status_1 = __importDefault(require("http-status"));
 const registerUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthService.registerUserIntoDB(req.body);
-    const { _id, name, email } = result;
+    const { _id, name, email, image } = result;
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         message: 'User registered successfully',
@@ -29,6 +29,7 @@ const registerUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0
             _id,
             name,
             email,
+            image
         },
     });
 }));

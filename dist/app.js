@@ -29,7 +29,7 @@ class Application {
         this.App.get('/', (req, res) => {
             res.status(200).json({
                 success: true,
-                message: 'Wink-blog on Fire 🔥🔥🔥',
+                message: 'Royal garage server on Fire 🔥🔥🔥',
             });
         });
         //Global error handel

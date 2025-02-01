@@ -25,8 +25,8 @@ const registerUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, functi
         throw new AppError_1.AppError(http_status_1.default.CONFLICT, 'Customer Already Exist');
     }
     const data = yield user_model_1.User.create(payload);
-    const { _id, name, email } = data;
-    const result = { _id, name, email };
+    const { _id, name, email, image } = data;
+    const result = { _id, name, email, image };
     return result;
 });
 const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {

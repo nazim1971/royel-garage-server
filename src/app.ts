@@ -30,7 +30,7 @@ class Application {
     this.App.get('/', (req: Request, res: Response) => {
       res.status(200).json({
         success: true,
-        message: 'Wink-blog on Fire 🔥🔥🔥',
+        message: 'Royal garage server on Fire 🔥🔥🔥',
       });
     });
 

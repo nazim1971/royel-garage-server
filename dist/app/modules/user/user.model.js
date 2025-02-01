@@ -36,6 +36,10 @@ const userSchema = new mongoose_1.Schema({
         trim: true,
         select: false,
     },
+    image: {
+        type: String,
+        trim: true,
+    },
     role: {
         type: String,
         enum: ['customer', 'admin'],

@@ -8,6 +8,7 @@ export interface TUser {
     email: string;
     password: string;
     role: TUserRole;
+    image?: string;
     isBlocked: boolean;
 }
 

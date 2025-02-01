@@ -6,7 +6,7 @@ import httpStatus from 'http-status';
 
 const registerUser = catchAsync(async (req, res) => {
   const result = await AuthService.registerUserIntoDB(req.body);
-  const { _id, name, email } = result;
+  const { _id, name, email, image } = result;
 
   sendResponse(res, {
     success: true,
@@ -16,6 +16,7 @@ const registerUser = catchAsync(async (req, res) => {
       _id,
       name,
       email,
+      image
     },
   });
 });

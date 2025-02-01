@@ -14,9 +14,9 @@ const registerUserIntoDB = async (payload: TUser) => {
   }
   const data = await User.create(payload);
 
-  const { _id, name, email } = data;
+  const { _id, name, email, image } = data;
 
-  const result = { _id, name, email };
+  const result = { _id, name, email, image };
 
   return result;
 };
