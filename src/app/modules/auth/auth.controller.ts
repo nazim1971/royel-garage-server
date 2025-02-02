@@ -59,6 +59,7 @@ const getSingleUserFromDB = catchAsync(async (req, res) => {
   const userResponse = {
     name: user.name,
     email: user.email,
+    image: user.image
   };
 
   sendResponse(res, {

@@ -65,6 +65,7 @@ const getSingleUserFromDB = (0, catchAsync_1.catchAsync)((req, res) => __awaiter
     const userResponse = {
         name: user.name,
         email: user.email,
+        image: user.image
     };
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
