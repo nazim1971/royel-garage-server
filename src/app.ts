@@ -19,7 +19,7 @@ class Application {
     this.App.use(express.json());
     this.App.use(cookieParser());
     this.App.use(cors({
-      origin: 'https://royal-garage.vercel.app',
+      origin: ['https://royal-garage.vercel.app',"http://localhost:5173"],
       credentials: true
     }));
   }
