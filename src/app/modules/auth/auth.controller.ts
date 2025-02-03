@@ -72,10 +72,11 @@ const getSingleUserFromDB = catchAsync(async (req, res) => {
 
 const updateUserNameFromDB = catchAsync(async (req, res) => {
   const { email } = req.params;  // Get email from request params
-  const { newName } = req.body;  // Get newName from request body
+  const userData = req.body;  // Get userData from request body
 
+ 
   // Validate that newName is provided
-  if (!newName) {
+  if (!userData) {
     return sendResponse(res, {
       statusCode: httpStatus.BAD_REQUEST,
       success: false,
@@ -84,7 +85,7 @@ const updateUserNameFromDB = catchAsync(async (req, res) => {
   }
 
   // Call the service to update the user's name
-  const user = await AuthService.updateUserName(email, newName);
+  const user = await AuthService.updateUserName(email, userData?.name);
 
   const userResponse = {
     name: user.name,
@@ -103,8 +104,8 @@ const updateUserNameFromDB = catchAsync(async (req, res) => {
 
 
 const resetPassword = catchAsync(async (req, res) => {
-  const { currentPassword, email, newPassword } = req.body;
-  const result = await AuthService.changePassword(email,currentPassword, newPassword);
+
+  const result = await AuthService.changePassword(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

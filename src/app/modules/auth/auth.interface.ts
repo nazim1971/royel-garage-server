@@ -8,5 +8,7 @@ export type TSingleUser = {
   email?: string;
   isBlocked?: boolean;
   role?: string
-  image?: string
+  image?: string;
+  currentPassword?: string;
+  newPassword?: string;
 }

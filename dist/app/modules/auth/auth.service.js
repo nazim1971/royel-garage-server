@@ -74,10 +74,10 @@ const getSingleUser = (email) => __awaiter(void 0, void 0, void 0, function* () 
     }
     return user;
 });
-const updateUserName = (email, newName) => __awaiter(void 0, void 0, void 0, function* () {
+const updateUserName = (email, userData) => __awaiter(void 0, void 0, void 0, function* () {
     // Find the user by email and update the name, returning the updated document
     const user = yield user_model_1.User.findOneAndUpdate({ email }, // Query condition: find user by email
-    { name: newName }, { new: true } // Ensure we get the updated user object back
+    { name: userData }, { new: true } // Ensure we get the updated user object back
     );
     if (!user) {
         throw new AppError_1.AppError(http_status_1.default.NOT_FOUND, 'User not found');
@@ -87,11 +87,12 @@ const updateUserName = (email, newName) => __awaiter(void 0, void 0, void 0, fun
     }
     return user;
 });
-const changePassword = (email, currentPassword, newPassword) => __awaiter(void 0, void 0, void 0, function* () {
+const changePassword = (userData) => __awaiter(void 0, void 0, void 0, function* () {
     // Find the user
+    const { email, currentPassword, newPassword } = userData;
     const user = yield user_model_1.User.findOne({ email }).select('+password');
     if (!user) {
-        throw new AppError_1.AppError(http_status_1.default.NOT_FOUND, 'User not found');
+        throw new AppError_1.AppError(http_status_1.default.NOT_FOUND, 'User help not found');
     }
     const userStatus = user === null || user === void 0 ? void 0 : user.isBlocked;
     // check if the user is already deleted

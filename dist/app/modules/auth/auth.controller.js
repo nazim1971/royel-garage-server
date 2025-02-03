@@ -76,9 +76,9 @@ const getSingleUserFromDB = (0, catchAsync_1.catchAsync)((req, res) => __awaiter
 }));
 const updateUserNameFromDB = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.params; // Get email from request params
-    const { newName } = req.body; // Get newName from request body
+    const userData = req.body; // Get userData from request body
     // Validate that newName is provided
-    if (!newName) {
+    if (!userData) {
         return (0, sendResponse_1.sendResponse)(res, {
             statusCode: http_status_1.default.BAD_REQUEST,
             success: false,
@@ -86,7 +86,7 @@ const updateUserNameFromDB = (0, catchAsync_1.catchAsync)((req, res) => __awaite
         });
     }
     // Call the service to update the user's name
-    const user = yield auth_service_1.AuthService.updateUserName(email, newName);
+    const user = yield auth_service_1.AuthService.updateUserName(email, userData === null || userData === void 0 ? void 0 : userData.name);
     const userResponse = {
         name: user.name,
         email: user.email,
@@ -100,8 +100,7 @@ const updateUserNameFromDB = (0, catchAsync_1.catchAsync)((req, res) => __awaite
     });
 }));
 const resetPassword = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { currentPassword, email, newPassword } = req.body;
-    const result = yield auth_service_1.AuthService.changePassword(email, currentPassword, newPassword);
+    const result = yield auth_service_1.AuthService.changePassword(req.body);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

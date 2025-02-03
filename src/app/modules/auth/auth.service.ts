@@ -82,11 +82,11 @@ const getSingleUser = async (email: string): Promise<TSingleUser> => {
   return user;
 };
 
-const updateUserName = async (email: string, newName: string): Promise<TUser> => {
+const updateUserName = async (email: string, userData: string): Promise<TUser> => {
   // Find the user by email and update the name, returning the updated document
   const user = await User.findOneAndUpdate(
     { email },         // Query condition: find user by email
-    { name: newName },
+    { name: userData },
     { new: true }      // Ensure we get the updated user object back
   );
 
@@ -102,11 +102,13 @@ const updateUserName = async (email: string, newName: string): Promise<TUser> =>
 };
 
 
-export const changePassword  = async (email: string,currentPassword: string, newPassword: string) => {
+export const changePassword  = async (userData: TSingleUser) => {
   // Find the user
+  const {email, currentPassword, newPassword} = userData
   const user = await User.findOne({ email }).select('+password');
+  
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'User help not found');
   }
 
 
@@ -117,12 +119,12 @@ export const changePassword  = async (email: string,currentPassword: string, new
   }
  
     // Verify current password
-    const isPasswordCorrect = await User.isPasswordMatched(currentPassword, user.password);
+    const isPasswordCorrect = await User.isPasswordMatched(currentPassword!, user.password);
     if (!isPasswordCorrect) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Current password is incorrect');
     }
 
-    const newHashedPassword = await bcrypt.hash(newPassword, Number(config.slat));
+    const newHashedPassword = await bcrypt.hash(newPassword!, Number(config.slat));
 
     await User.findOneAndUpdate({ email }, { password: newHashedPassword });
 
